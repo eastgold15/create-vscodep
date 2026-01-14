@@ -8,7 +8,7 @@ import { getExtensionHelper } from "./extension.helper";
 import { getExtensionPanel } from "./extension.panel";
 import { getGitignore } from "./gitignore";
 import { getIndexHtml } from "./index.html";
-import { getPackageJson } from "./package.json";
+import { getPackageJson } from "./package";
 import { getReactApp, getReactMain } from "./react";
 import { getReadme } from "./readme";
 import {
@@ -16,6 +16,7 @@ import {
   getTSConfigNode,
   getTSConfigRoot,
 } from "./tsconfig.json";
+import { getUltraciteConfig } from "./ultracite";
 import { getViteConfig } from "./vite.config";
 import {
   getVSCodeExtensions,
@@ -136,6 +137,11 @@ export async function render(preferences: Preferences) {
     );
   } else if (preferences.linter === "Biome") {
     await fs.writeFile(path.join(projectDir, "biome.json"), getBiomeConfig());
+  } else if (preferences.linter === "ultracite") {
+    await fs.writeFile(
+      path.join(projectDir, "biome.json.bak"),
+      getUltraciteConfig()
+    );
   }
 
   // 写入 VSCode 配置

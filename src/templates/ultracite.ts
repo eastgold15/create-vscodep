@@ -1,6 +1,6 @@
 import dedent from "ts-dedent";
 
-export function getBiomeConfig() {
+export function getUltraciteConfig() {
   return dedent`
    {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",

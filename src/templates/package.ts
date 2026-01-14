@@ -1,5 +1,5 @@
 import dedent from "ts-dedent";
-import { dependencies } from "../deps";
+import { dependencies, devDependencies } from "../deps";
 import type { Preferences } from "../utils";
 
 export function getPackageJson(preferences: Preferences) {
@@ -15,19 +15,19 @@ export function getPackageJson(preferences: Preferences) {
   if (framework === "react") {
     deps.react = dependencies.react;
     deps["react-dom"] = dependencies["react-dom"];
-    devDeps["@types/react"] = dependencies["@types/react"];
-    devDeps["@types/react-dom"] = dependencies["@types/react-dom"];
+    devDeps["@types/react"] = devDependencies["@types/react"];
+    devDeps["@types/react-dom"] = devDependencies["@types/react-dom"];
   } else if (framework === "vue") {
     deps.vue = dependencies.vue;
-    devDeps["@vue/tsconfig"] = dependencies["@vue/tsconfig"];
+    devDeps["@vue/tsconfig"] = devDependencies["@vue/tsconfig"];
   }
 
   // 核心开发依赖
-  devDeps["@tomjs/tsconfig"] = dependencies["@tomjs/tsconfig"];
+  devDeps["@tomjs/tsconfig"] = devDependencies["@tomjs/tsconfig"];
   devDeps["@tomjs/vite-plugin-vscode"] =
     dependencies["@tomjs/vite-plugin-vscode"];
-  devDeps["@types/vscode"] = dependencies["@types/vscode"];
-  devDeps["@types/vscode-webview"] = dependencies["@types/vscode-webview"];
+  devDeps["@types/vscode"] = devDependencies["@types/vscode"];
+  devDeps["@types/vscode-webview"] = devDependencies["@types/vscode-webview"];
   devDeps.vite = dependencies.vite;
 
   if (framework === "react") {
@@ -38,9 +38,11 @@ export function getPackageJson(preferences: Preferences) {
 
   // Linter
   if (linter === "ESLint") {
-    devDeps.eslint = dependencies.eslint;
+    devDeps.eslint = devDependencies.eslint;
   } else if (linter === "Biome") {
-    devDeps["@biomejs/biome"] = dependencies["@biomejs/biome"];
+    devDeps["@biomejs/biome"] = devDependencies["@biomejs/biome"];
+  } else if (linter === "ultracite") {
+    devDeps.ultracite = devDependencies.ultracite;
   }
 
   const scripts: Record<string, string> = {
