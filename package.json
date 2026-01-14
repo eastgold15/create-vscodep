@@ -1,44 +1,46 @@
 {
-  "publisher": "tomjs-test",
-  "name": "template-react",
-  "type": "commonjs",
-  "version": "0.0.0",
-  "private": true,
-  "description": "vite + react",
-  "main": "dist/extension/index.js",
-  "engines": {
-    "node": ">=18",
-    "vscode": "^1.75.0"
+  "name": "create-vscodep",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Create VS Code extensions with modern tooling",
+  "author": "boer",
+  "license": "MIT",
+  "bin": {
+    "create-vscodep": "dist/index.js"
   },
-  "activationEvents": [],
-  "contributes": {
-    "commands": [
-      {
-        "command": "hello-world.showHelloWorld",
-        "title": "Hello World: Show"
-      }
-    ]
-  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "pkgroll --watch",
+    "build": "pkgroll",
+    "prepare": "husky",
+    "prepublishOnly": "bun run build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "check": "tsc --noEmit"
   },
   "dependencies": {
-    "@vscode/webview-ui-toolkit": "^1.4.0",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "enquirer": "^2.4.1",
+    "minimist": "^1.2.8",
+    "tasuku": "^2.0.1"
   },
   "devDependencies": {
-    "@tomjs/tsconfig": "^3.2.0",
-    "@tomjs/vite-plugin-vscode": "^7.0.0",
-    "@types/bun": "^1.3.6",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "@types/vscode": "^1.93.0",
-    "@types/vscode-webview": "^1.57.5",
-    "@vitejs/plugin-react": "^5.1.2",
-    "@vitejs/plugin-react-swc": "^4.2.2",
-    "vite": "7.3.0"
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "^1.2.0",
+    "@types/minimist": "^1.2.5",
+    "pkgroll": "^2.11.2",
+    "ts-dedent": "^2.2.0",
+    "typescript": "^5.8.2",
+    "husky": "^9.1.7"
+  },
+  "packageManager": "bun@1.2.5",
+  "engines": {
+    "bun": ">=1.0.0",
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/boer/create-vscodep.git"
   }
 }
