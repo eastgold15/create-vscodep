@@ -1,13 +1,12 @@
 import { randomBytes } from "node:crypto";
 import fs from "node:fs/promises";
-import type { PromptOptions } from "enquirer";
-import enquirer from "enquirer";
+import prompts, { type PromptObject } from "prompts";
 
 export type PackageManager = "bun" | "npm" | "pnpm" | "yarn";
 
 export type Framework = "react" | "vue";
 
-export type Linter = "ESLint" | "Biome" | "None";
+export type Linter = "ESLint" | "Biome" | "None" | "ultracite";
 
 export interface Preferences {
   projectName: string;
@@ -49,14 +48,14 @@ export async function createOrFindDir(dir: string) {
     await fs.access(dir);
     const filesInTargetDirectory = await fs.readdir(dir);
     if (filesInTargetDirectory.length > 0) {
-      const { overwrite } = await prompt({
+      const response = await prompts({
         type: "confirm",
         name: "overwrite",
         message:
           "Target directory is not empty. Remove existing files and continue?",
         initial: false,
       });
-      if (!overwrite) {
+      if (!response.overwrite) {
         process.exit(0);
       }
       await fs.rm(dir, { recursive: true, force: true });
@@ -104,10 +103,10 @@ export function toLowerCase(name: string): string {
   return name.toLowerCase();
 }
 
-export function createPrompt(
-  questions: Array<PromptOptions | string>
+export async function createPrompt(
+  questions: PromptObject | PromptObject[]
 ): Promise<any> {
-  return enquirer.prompt(questions);
+  return await prompts(questions);
 }
 
 export function getExtensionId(name: string): string {
