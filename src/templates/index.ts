@@ -225,32 +225,9 @@ function getUtilsIndex() {
 }
 
 function getUtilsVscode(preferences: Preferences) {
-  const toolkitImport =
-    preferences.framework === "react"
-      ? `import { provideVsCodeDesignSystem, Button, TextField } from '@vscode/webview-ui-toolkit';`
-      : "";
-  const toolkitInit =
-    preferences.framework === "react"
-      ? "provideVsCodeDesignSystem().register(Button(), TextField());"
-      : "";
-
   return `
 // @ts-ignore
 export const vscode = acquireVsCodeApi();
-
-${toolkitInit}
-
-export function postMessage<T = any>(type: string, data?: T) {
-  vscode.postMessage({ type, data });
-}
-
-export function onMessage<T = any>(
-  callback: (message: { type: string; data: T }) => void
-) {
-  window.addEventListener('message', (event) => {
-    callback(event.data);
-  });
-}
 `;
 }
 

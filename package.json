@@ -13,9 +13,9 @@
   ],
   "scripts": {
     "dev": "pkgroll --watch",
-    "build": "pkgroll",
+    "build": "pkgroll && npm link",
     "prepare": "husky",
-    "prepublishOnly": "bun run build",
+    "prepublishOnly": "bun run build ",
     "check": "tsc --noEmit",
     "lint": "ultracite check  .",
     "lint:fix": "ultracite fix ."

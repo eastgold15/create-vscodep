@@ -38,69 +38,89 @@ export function getVSCodeLaunch(preferences: Preferences) {
   const { meta } = preferences;
 
   return dedent`
+   // A launch configuration that compiles the extension and then opens it inside a new window
+// Use IntelliSense to learn about possible attributes.
+// Hover to view descriptions of existing attributes.
+// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+{
+  "version": "0.2.0",
+  "configurations": [
     {
-      "version": "0.2.0",
-      "configurations": [
-        {
-          "name": "Debug Extension",
-          "type": "extensionHost",
-          "request": "launch",
-          "args": [
-            "--disable-extensions",
-            "--extensionDevelopmentPath=\${workspaceFolder}"
-          ],
-          "preLaunchTask": "\${defaultBuildTask}"
-        },
-        {
-          "name": "Preview Extension",
-          "type": "extensionHost",
-          "request": "launch",
-          "args": [
-            "--extensionDevelopmentPath=\${workspaceFolder}"
-          ],
-          "outFiles": ["\${workspaceFolder}/dist/**/*"],
-          "preLaunchTask": "npm: build"
-        }
-      ]
+      "name": "Debug Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=\${workspaceFolder}"
+      ],
+      "outFiles": [
+        "\${workspaceFolder}/dist/extension/*.js"
+      ],
+      "preLaunchTask": "npm: dev"
+    },
+    {
+      "name": "Preview Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=\${workspaceFolder}"
+      ],
+      "outFiles": [
+        "\${workspaceFolder}/dist/extension/*.js"
+      ],
+      "preLaunchTask": "npm: build"
     }
+  ]
+}
   `;
 }
 
 export function getVSCodeTasks(preferences: Preferences) {
   return dedent`
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+// for the documentation about the tasks.json format
+{
+  "version": "2.0.0",
+  "tasks": [
     {
-      "version": "2.0.0",
-      "tasks": [
-        {
-          "label": "dev",
-          "type": "shell",
-          "command": "bun",
-          "args": ["run", "dev"],
-          "isBackground": true,
-          "problemMatcher": {
-            "owner": "custom",
-            "pattern": {
-              "regexp": "^$"
-            },
-            "background": {
-              "activeOnStart": true,
-              "beginsPattern": ".",
-              "endsPattern": "."
-            }
-          }
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": {
+        "owner": "typescript",
+        "fileLocation": "relative",
+        "pattern": {
+          "regexp": "^([a-zA-Z]\\:/?([\\w\\-]/?)+\\.\\w+):(\\d+):(\\d+): (ERROR|WARNING)\\: (.*)$",
+          "file": 1,
+          "line": 3,
+          "column": 4,
+          "code": 5,
+          "message": 6
         },
-        {
-          "label": "build",
-          "type": "shell",
-          "command": "bun",
-          "args": ["run", "build"],
-          "group": {
-            "kind": "build",
-            "isDefault": true
-          },
-          "problemMatcher": "$tsc"
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*extension build start*$",
+          "endsPattern": "^.*extension build success.*$"
         }
-      ]
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
     }
+  ]
+}
   `;
 }

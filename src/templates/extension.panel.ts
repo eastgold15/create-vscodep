@@ -26,11 +26,11 @@ export class ${meta.viewName}Panel {
   }
 
   public static render(context: ExtensionContext) {
-    if (MainPanel.currentPanel) {
-      MainPanel.currentPanel._panel.reveal(ViewColumn.One);
+    if ( ${meta.viewName}.currentPanel) {
+       ${meta.viewName}.currentPanel._panel.reveal(ViewColumn.One);
     }
     else {
-      const panel = window.createWebviewPanel('showHelloWorld', 'Hello World', ViewColumn.One, {
+      const panel = window.createWebviewPanel('${meta.viewName}', '${meta.viewName}', ViewColumn.One, {
         enableScripts: true,
       });
 
