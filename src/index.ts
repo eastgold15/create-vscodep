@@ -216,7 +216,7 @@ function getInstallCommands(preferences: Preferences): string[] {
     commands.push(`${preferences.packageManager} exec biome init`);
   }
   if (preferences.linter === "ultracite") {
-    commands.push(`${preferences.packageManager} exec ultracite init`);
+    commands.push(`${preferences.packageManager} x ultracite init`);
   }
 
   if (preferences.linter === "ESLint") {
