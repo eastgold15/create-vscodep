@@ -124,6 +124,10 @@ export async function render(preferences: Preferences) {
       getViteEnvDts()
     );
     await fs.writeFile(
+      path.join(projectDir, "src", "vscode-webview.d.ts"),
+      getVscodeWebViewDts()
+    );
+    await fs.writeFile(
       path.join(projectDir, "src", "shims-vue.d.ts"),
       getVueShims()
     );
@@ -179,6 +183,42 @@ interface ImportMeta {
 `;
 }
 
+function getVscodeWebViewDts() {
+  return `
+  // vscode-webview.d.ts
+declare global {
+  /**
+   * VS Code 注入到 Webview 的全局方法，用于获取通信 API
+   */
+  function acquireVsCodeApi<T = unknown>(): VSCodeWebviewApi<T>;
+
+  /**
+   * VS Code Webview 通信 API 的类型定义
+   */
+  interface VSCodeWebviewApi<T = unknown> {
+    /**
+     * 向 VS Code 扩展主进程发送消息
+     * @param data 可序列化的 JSON 数据（不能传函数、DOM 元素等）
+     */
+    postMessage(data: unknown): void;
+
+    /**
+     * 获取 Webview 的持久化状态
+     */
+    getState(): T | undefined;
+
+    /**
+     * 设置 Webview 的持久化状态（刷新后仍保留）
+     * @param state 要保存的状态（需可序列化）
+     */
+    setState(state: T): T;
+  }
+}
+// 确保这个文件被 TS 识别为模块
+export {};
+`;
+}
+
 function getUtilsIndex() {
   return `export * from './vscode';
 `;
@@ -194,9 +234,8 @@ function getUtilsVscode(preferences: Preferences) {
       ? "provideVsCodeDesignSystem().register(Button(), TextField());"
       : "";
 
-  return `import { acquireVsCodeApi } from 'vscode-webview';
-${toolkitImport}
-
+  return `
+// @ts-ignore
 export const vscode = acquireVsCodeApi();
 
 ${toolkitInit}
