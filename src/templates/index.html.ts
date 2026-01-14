@@ -1,5 +1,5 @@
-import dedent from 'ts-dedent';
-import type { Preferences } from '../utils';
+import dedent from "ts-dedent";
+import type { Preferences } from "../utils";
 
 export function getIndexHtml(preferences: Preferences) {
   const { framework } = preferences;
@@ -14,7 +14,7 @@ export function getIndexHtml(preferences: Preferences) {
       </head>
       <body>
         <div id="root"></div>
-        <script type="module" src="/src/main.${framework === 'react' ? 'tsx' : 'ts'}"></script>
+        <script type="module" src="/src/main.${framework === "react" ? "tsx" : "ts"}"></script>
       </body>
     </html>
   `;

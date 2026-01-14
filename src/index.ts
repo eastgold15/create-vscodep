@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-import { exec } from 'node:child_process';
-import { promisify } from 'node:util';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import minimist from 'minimist';
-import { createPrompt, detectPackageManager, PreferencesClass } from './utils';
-import type { PackageManager, Preferences } from './utils';
-import { render } from './templates';
+import { exec } from "node:child_process";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { promisify } from "node:util";
+import minimist from "minimist";
+import { render } from "./templates";
+import type { PackageManager, Preferences } from "./utils";
+import { createPrompt, detectPackageManager } from "./utils";
 
 const execAsync = promisify(exec);
 
@@ -30,7 +30,7 @@ async function main() {
   const projectName = args._[0];
 
   if (!projectName) {
-    console.error('Usage: create-vscodep <project-name>');
+    console.error("Usage: create-vscodep <project-name>");
     process.exit(1);
   }
 
@@ -42,10 +42,10 @@ async function main() {
     if (filesInTargetDirectory.length > 0) {
       const { overwrite } = await createPrompt([
         {
-          type: 'confirm',
-          name: 'overwrite',
+          type: "confirm",
+          name: "overwrite",
           message:
-            'Target directory is not empty. Remove existing files and continue?',
+            "Target directory is not empty. Remove existing files and continue?",
           initial: false,
         },
       ]);
@@ -64,15 +64,15 @@ async function main() {
     projectName: path.basename(projectDir),
     dir: projectDir,
     packageManager,
-    framework: 'react',
-    linter: 'None',
-    runtime: packageManager === 'bun' ? 'Bun' : 'Node.js',
+    framework: "react",
+    linter: "None",
+    runtime: packageManager === "bun" ? "Bun" : "Node.js",
     git: true,
     vscode: true,
     noInstall: args.install === undefined ? false : !args.install,
     meta: {
-      commandName: 'hello-world',
-      viewName: 'HelloWorld',
+      commandName: "hello-world",
+      viewName: "HelloWorld",
     },
   };
 
@@ -80,19 +80,19 @@ async function main() {
   if (args.defaults || args.framework || args.linter) {
     // 使用命令行参数
     if (args.framework) {
-      preferences.framework = args.framework as 'react' | 'vue';
+      preferences.framework = args.framework as "react" | "vue";
     }
     if (args.linter) {
-      preferences.linter = args.linter as 'ESLint' | 'Biome' | 'None';
+      preferences.linter = args.linter as "ESLint" | "Biome" | "None";
     }
-    if (args.git === 'false' || args.git === 'false') {
+    if (args.git === "false" || args.git === "false") {
       preferences.git = false;
     }
-    if (args.vscode === 'false' || !args.vscode) {
+    if (args.vscode === "false" || !args.vscode) {
       preferences.vscode = false;
     }
     if (args.defaults) {
-      console.log('Using default options...');
+      console.log("Using default options...");
       preferences.git = false;
       preferences.vscode = false;
       preferences.noInstall = true;
@@ -101,81 +101,83 @@ async function main() {
     // 交互式问答
     const answers = await createPrompt([
       {
-        type: 'select',
-        name: 'framework',
-        message: 'Select a framework',
-        choices: ['react', 'vue'],
+        type: "select",
+        name: "framework",
+        message: "Select a framework",
+        choices: ["react", "vue"],
         initial: 0,
       },
       {
-        type: 'select',
-        name: 'linter',
-        message: 'Select a linter',
-        choices: ['ESLint', 'Biome', 'None'],
+        type: "select",
+        name: "linter",
+        message: "Select a linter",
+        choices: ["ESLint", "Biome", "None"],
         initial: 2,
       },
       {
-        type: 'confirm',
-        name: 'git',
-        message: 'Initialize Git repository?',
+        type: "confirm",
+        name: "git",
+        message: "Initialize Git repository?",
         initial: true,
       },
       {
-        type: 'confirm',
-        name: 'vscode',
-        message: 'Generate VSCode configuration?',
+        type: "confirm",
+        name: "vscode",
+        message: "Generate VSCode configuration?",
         initial: true,
       },
       {
-        type: 'confirm',
-        name: 'install',
-        message: 'Install dependencies?',
+        type: "confirm",
+        name: "install",
+        message: "Install dependencies?",
         initial: true,
       },
     ]);
 
-    preferences.framework = answers.framework as 'react' | 'vue';
-    preferences.linter = answers.linter as 'ESLint' | 'Biome' | 'None';
+    preferences.framework = answers.framework as "react" | "vue";
+    preferences.linter = answers.linter as "ESLint" | "Biome" | "None";
     preferences.git = answers.git;
     preferences.vscode = answers.vscode;
     preferences.noInstall = !answers.install;
   }
 
-  console.log('Generating project...');
+  console.log("Generating project...");
   await render(preferences);
-  console.log('✅ Project generated!');
+  console.log("✅ Project generated!");
 
   if (!preferences.noInstall) {
-    console.log('Installing dependencies...');
+    console.log("Installing dependencies...");
     const commands = getInstallCommands(preferences);
     for (const cmd of commands) {
       console.log(`  $ ${cmd}`);
       await execAsync(cmd, { cwd: projectDir });
     }
-    console.log('✅ Dependencies installed!');
+    console.log("✅ Dependencies installed!");
   }
 
   console.log(`\n✅ Project created at: ${projectDir}`);
-  console.log(`\nNext steps:`);
+  console.log("\nNext steps:");
   console.log(`  cd ${projectName}`);
-  console.log(`  ${preferences.packageManager === 'bun' ? 'bun dev' : 'npm run dev'}`);
+  console.log(
+    `  ${preferences.packageManager === "bun" ? "bun dev" : "npm run dev"}`
+  );
 }
 
 function getInstallCommands(preferences: Preferences): string[] {
   const commands: string[] = [];
 
   if (preferences.git) {
-    commands.push('git init');
+    commands.push("git init");
   }
 
   const installCmd = `${preferences.packageManager} install`;
   commands.push(installCmd);
 
-  if (preferences.linter === 'Biome') {
+  if (preferences.linter === "Biome") {
     commands.push(`${preferences.packageManager} exec biome init`);
   }
 
-  if (preferences.linter === 'ESLint') {
+  if (preferences.linter === "ESLint") {
     commands.push(`${preferences.packageManager} run lint:fix`);
   }
 

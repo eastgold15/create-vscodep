@@ -1,5 +1,5 @@
-import dedent from 'ts-dedent';
-import type { Preferences } from '../utils';
+import dedent from "ts-dedent";
+import type { Preferences } from "../utils";
 
 export function getExtensionHelper(preferences: Preferences) {
   return dedent`
@@ -21,7 +21,7 @@ export function getExtensionHelper(preferences: Preferences) {
       <body>
         <div id="root"></div>
         <script type="module" src="\${devServerUrl}/@vite/client"></script>
-        <script type="module" src="\${devServerUrl}/src/main.${preferences.framework === 'react' ? 'tsx' : 'ts'}"></script>
+        <script type="module" src="\${devServerUrl}/src/main.${preferences.framework === "react" ? "tsx" : "ts"}"></script>
       </body>
     </html>\`;
       }

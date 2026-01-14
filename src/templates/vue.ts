@@ -1,5 +1,5 @@
-import dedent from 'ts-dedent';
-import type { Preferences } from '../utils';
+import dedent from "ts-dedent";
+import type { Preferences } from "../utils";
 
 export function getVueMain(preferences: Preferences) {
   return dedent`

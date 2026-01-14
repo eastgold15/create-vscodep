@@ -1,10 +1,10 @@
-import dedent from 'ts-dedent';
-import type { Preferences } from '../utils';
+import dedent from "ts-dedent";
+import type { Preferences } from "../utils";
 
 export function getExtensionPanel(preferences: Preferences) {
   const { meta, framework } = preferences;
 
-  const extension = framework === 'react' ? '.tsx' : '';
+  const extension = framework === "react" ? ".tsx" : "";
 
   return dedent`
     import * as vscode from 'vscode';

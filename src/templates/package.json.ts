@@ -1,6 +1,6 @@
-import dedent from 'ts-dedent';
-import type { Preferences } from '../utils';
-import { dependencies } from '../deps';
+import dedent from "ts-dedent";
+import { dependencies } from "../deps";
+import type { Preferences } from "../utils";
 
 export function getPackageJson(preferences: Preferences) {
   const { projectName, framework, linter, packageManager } = preferences;
@@ -9,50 +9,52 @@ export function getPackageJson(preferences: Preferences) {
   const devDeps: Record<string, string> = {};
 
   // 核心依赖
-  deps['@vscode/webview-ui-toolkit'] = dependencies['@vscode/webview-ui-toolkit'];
+  deps["@vscode/webview-ui-toolkit"] =
+    dependencies["@vscode/webview-ui-toolkit"];
 
-  if (framework === 'react') {
+  if (framework === "react") {
     deps.react = dependencies.react;
-    deps['react-dom'] = dependencies['react-dom'];
-    devDeps['@types/react'] = dependencies['@types/react'];
-    devDeps['@types/react-dom'] = dependencies['@types/react-dom'];
-  } else if (framework === 'vue') {
+    deps["react-dom"] = dependencies["react-dom"];
+    devDeps["@types/react"] = dependencies["@types/react"];
+    devDeps["@types/react-dom"] = dependencies["@types/react-dom"];
+  } else if (framework === "vue") {
     deps.vue = dependencies.vue;
-    devDeps['@vue/tsconfig'] = dependencies['@vue/tsconfig'];
+    devDeps["@vue/tsconfig"] = dependencies["@vue/tsconfig"];
   }
 
   // 核心开发依赖
-  devDeps['@tomjs/tsconfig'] = dependencies['@tomjs/tsconfig'];
-  devDeps['@tomjs/vite-plugin-vscode'] = dependencies['@tomjs/vite-plugin-vscode'];
-  devDeps['@types/vscode'] = dependencies['@types/vscode'];
-  devDeps['@types/vscode-webview'] = dependencies['@types/vscode-webview'];
+  devDeps["@tomjs/tsconfig"] = dependencies["@tomjs/tsconfig"];
+  devDeps["@tomjs/vite-plugin-vscode"] =
+    dependencies["@tomjs/vite-plugin-vscode"];
+  devDeps["@types/vscode"] = dependencies["@types/vscode"];
+  devDeps["@types/vscode-webview"] = dependencies["@types/vscode-webview"];
   devDeps.vite = dependencies.vite;
 
-  if (framework === 'react') {
-    devDeps['@vitejs/plugin-react'] = dependencies['@vitejs/plugin-react'];
-  } else if (framework === 'vue') {
-    devDeps['@vitejs/plugin-vue'] = dependencies['@vitejs/plugin-vue'];
+  if (framework === "react") {
+    devDeps["@vitejs/plugin-react"] = dependencies["@vitejs/plugin-react"];
+  } else if (framework === "vue") {
+    devDeps["@vitejs/plugin-vue"] = dependencies["@vitejs/plugin-vue"];
   }
 
   // Linter
-  if (linter === 'ESLint') {
+  if (linter === "ESLint") {
     devDeps.eslint = dependencies.eslint;
-  } else if (linter === 'Biome') {
-    devDeps['@biomejs/biome'] = dependencies['@biomejs/biome'];
+  } else if (linter === "Biome") {
+    devDeps["@biomejs/biome"] = dependencies["@biomejs/biome"];
   }
 
   const scripts: Record<string, string> = {
-    dev: 'vite',
-    build: 'tsc && vite build',
-    preview: 'vite preview',
+    dev: "vite",
+    build: "tsc && vite build",
+    preview: "vite preview",
   };
 
-  if (linter === 'ESLint') {
-    scripts.lint = 'eslint .';
-    scripts['lint:fix'] = 'eslint . --fix';
-  } else if (linter === 'Biome') {
-    scripts.lint = 'biome check .';
-    scripts['lint:fix'] = 'biome check . --write';
+  if (linter === "ESLint") {
+    scripts.lint = "eslint .";
+    scripts["lint:fix"] = "eslint . --fix";
+  } else if (linter === "Biome") {
+    scripts.lint = "biome check .";
+    scripts["lint:fix"] = "biome check . --write";
   }
 
   return dedent`
@@ -77,9 +79,9 @@ export function getPackageJson(preferences: Preferences) {
           }
         ]
       },
-      "scripts": ${JSON.stringify(scripts, null, 2).replace(/\n/g, '\n      ')},
-      "dependencies": ${JSON.stringify(deps, null, 2).replace(/\n/g, '\n      ')},
-      "devDependencies": ${JSON.stringify(devDeps, null, 2).replace(/\n/g, '\n      ')}
+      "scripts": ${JSON.stringify(scripts, null, 2).replace(/\n/g, "\n      ")},
+      "dependencies": ${JSON.stringify(deps, null, 2).replace(/\n/g, "\n      ")},
+      "devDependencies": ${JSON.stringify(devDeps, null, 2).replace(/\n/g, "\n      ")}
     }
   `;
 }

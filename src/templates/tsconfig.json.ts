@@ -1,5 +1,5 @@
-import dedent from 'ts-dedent';
-import type { Preferences } from '../utils';
+import dedent from "ts-dedent";
+import type { Preferences } from "../utils";
 
 export function getTSConfigRoot() {
   return dedent`
@@ -16,14 +16,14 @@ export function getTSConfigRoot() {
 export function getTSConfigApp(preferences: Preferences) {
   const { framework } = preferences;
 
-  let extendsPath = '';
-  let includes = '';
+  let extendsPath = "";
+  let includes = "";
 
-  if (framework === 'react') {
-    extendsPath = '@tomjs/tsconfig/react-dom.json';
+  if (framework === "react") {
+    extendsPath = "@tomjs/tsconfig/react-dom.json";
     includes = '"src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"';
-  } else if (framework === 'vue') {
-    extendsPath = '@vue/tsconfig/tsconfig.dom.json';
+  } else if (framework === "vue") {
+    extendsPath = "@vue/tsconfig/tsconfig.dom.json";
     includes = '"src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"';
   }
 

@@ -1,11 +1,11 @@
-import dedent from 'ts-dedent';
-import type { Preferences } from '../utils';
+import dedent from "ts-dedent";
+import type { Preferences } from "../utils";
 
 export function getVSCodeSettings(preferences: Preferences) {
   return dedent`
     {
       "editor.formatOnSave": true,
-      "editor.defaultFormatter": "${preferences.linter === 'Biome' ? 'biomejs.biome' : 'esbenp.prettier-vscode'}",
+      "editor.defaultFormatter": "${preferences.linter === "Biome" ? "biomejs.biome" : "esbenp.prettier-vscode"}",
       "typescript.tsdk": "node_modules/typescript/lib",
       "typescript.enablePromptUseWorkspaceTsdk": true,
       "vitest.enable": true
@@ -15,21 +15,21 @@ export function getVSCodeSettings(preferences: Preferences) {
 
 export function getVSCodeExtensions(preferences: Preferences) {
   const extensions = [
-    'dbaeumer.vscode-eslint',
-    'esbenp.prettier-vscode',
-    'biomejs.biome',
-    'vscodevim.vim',
-    'usernamehw.errorlens',
-    'GitHub.copilot',
-    'WakaTime.vscode-wakatime',
-    'yzhang.markdown-all-in-one',
-    'streetsidesoftware.code-spell-checker',
-    'bradlc.vscode-tailwindcss',
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "biomejs.biome",
+    "vscodevim.vim",
+    "usernamehw.errorlens",
+    "GitHub.copilot",
+    "WakaTime.vscode-wakatime",
+    "yzhang.markdown-all-in-one",
+    "streetsidesoftware.code-spell-checker",
+    "bradlc.vscode-tailwindcss",
   ];
 
   return dedent`
     {
-      "recommendations": ${JSON.stringify(extensions, null, 2).replace(/\n/g, '\n      ')}
+      "recommendations": ${JSON.stringify(extensions, null, 2).replace(/\n/g, "\n      ")}
     }
   `;
 }

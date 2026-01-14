@@ -1,5 +1,5 @@
-import dedent from 'ts-dedent';
-import type { Preferences } from '../utils';
+import dedent from "ts-dedent";
+import type { Preferences } from "../utils";
 
 export function getReadme(preferences: Preferences) {
   const { projectName, framework, packageManager } = preferences;
@@ -11,7 +11,7 @@ export function getReadme(preferences: Preferences) {
 
     ## Features
 
-    - ${framework} ${framework === 'react' ? '19' : '3'} with TypeScript
+    - ${framework} ${framework === "react" ? "19" : "3"} with TypeScript
     - Vite for fast development
     - VSCode Webview UI Toolkit
     - Hot Module Replacement (HMR)
@@ -41,8 +41,8 @@ export function getReadme(preferences: Preferences) {
     │   ├── index.ts        # Extension activation and commands
     │   └── views/          # Webview management
     ├── src/               # ${framework} frontend code
-    │   ├── main.${framework === 'react' ? 'tsx' : 'ts'}  # ${framework} entry point
-    │   └── App.${framework === 'react' ? 'tsx' : 'vue'}  # Main ${framework} component
+    │   ├── main.${framework === "react" ? "tsx" : "ts"}  # ${framework} entry point
+    │   └── App.${framework === "react" ? "tsx" : "vue"}  # Main ${framework} component
     ├── vite.config.ts     # Vite configuration
     └── package.json       # Project manifest
     \`\`\`

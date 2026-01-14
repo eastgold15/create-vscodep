@@ -1,18 +1,18 @@
-import dedent from 'ts-dedent';
-import type { Preferences } from '../utils';
+import dedent from "ts-dedent";
+import type { Preferences } from "../utils";
 
 export function getViteConfig(preferences: Preferences) {
   const { framework } = preferences;
 
-  let pluginImport = '';
-  let pluginConfig = '';
+  let pluginImport = "";
+  let pluginConfig = "";
 
-  if (framework === 'react') {
+  if (framework === "react") {
     pluginImport = `import react from '@vitejs/plugin-react';`;
-    pluginConfig = `react(),`;
-  } else if (framework === 'vue') {
+    pluginConfig = "react(),";
+  } else if (framework === "vue") {
     pluginImport = `import vue from '@vitejs/plugin-vue';`;
-    pluginConfig = `vue(),`;
+    pluginConfig = "vue(),";
   }
 
   return dedent`

@@ -1,162 +1,161 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { getPackageJson } from './package.json';
-import { getViteConfig } from './vite.config';
-import { getTSConfigRoot, getTSConfigApp, getTSConfigNode } from './tsconfig.json';
-import { getGitignore } from './gitignore';
-import { getReadme } from './readme';
-import { getExtensionIndex } from './extension';
-import { getExtensionPanel } from './extension.panel';
-import { getExtensionHelper } from './extension.helper';
-import { getIndexHtml } from './index.html';
-import { getReactMain, getReactApp } from './react';
-import { getVueMain, getVueApp, getVueShims } from './vue';
-import { getESLintConfig } from './eslint';
-import { getBiomeConfig } from './biome';
-import { getVSCodeSettings, getVSCodeExtensions, getVSCodeLaunch, getVSCodeTasks } from './vscode';
-import type { Preferences } from '../utils';
+import fs from "node:fs/promises";
+import path from "node:path";
+import type { Preferences } from "../utils";
+import { getBiomeConfig } from "./biome";
+import { getESLintConfig } from "./eslint";
+import { getExtensionIndex } from "./extension";
+import { getExtensionHelper } from "./extension.helper";
+import { getExtensionPanel } from "./extension.panel";
+import { getGitignore } from "./gitignore";
+import { getIndexHtml } from "./index.html";
+import { getPackageJson } from "./package.json";
+import { getReactApp, getReactMain } from "./react";
+import { getReadme } from "./readme";
+import {
+  getTSConfigApp,
+  getTSConfigNode,
+  getTSConfigRoot,
+} from "./tsconfig.json";
+import { getViteConfig } from "./vite.config";
+import {
+  getVSCodeExtensions,
+  getVSCodeLaunch,
+  getVSCodeSettings,
+  getVSCodeTasks,
+} from "./vscode";
+import { getVueApp, getVueMain, getVueShims } from "./vue";
 
 export async function render(preferences: Preferences) {
   const projectDir = preferences.dir;
 
   // 创建目录结构
-  await fs.mkdir(path.join(projectDir, 'extension', 'views'), { recursive: true });
-  await fs.mkdir(path.join(projectDir, 'src', 'utils'), { recursive: true });
+  await fs.mkdir(path.join(projectDir, "extension", "views"), {
+    recursive: true,
+  });
+  await fs.mkdir(path.join(projectDir, "src", "utils"), { recursive: true });
 
   // 写入 package.json
   await fs.writeFile(
-    path.join(projectDir, 'package.json'),
-    getPackageJson(preferences),
+    path.join(projectDir, "package.json"),
+    getPackageJson(preferences)
   );
 
   // 写入 vite.config.ts
   await fs.writeFile(
-    path.join(projectDir, 'vite.config.ts'),
-    getViteConfig(preferences),
+    path.join(projectDir, "vite.config.ts"),
+    getViteConfig(preferences)
   );
 
   // 写入 tsconfig.json
+  await fs.writeFile(path.join(projectDir, "tsconfig.json"), getTSConfigRoot());
   await fs.writeFile(
-    path.join(projectDir, 'tsconfig.json'),
-    getTSConfigRoot(),
+    path.join(projectDir, "tsconfig.app.json"),
+    getTSConfigApp(preferences)
   );
   await fs.writeFile(
-    path.join(projectDir, 'tsconfig.app.json'),
-    getTSConfigApp(preferences),
-  );
-  await fs.writeFile(
-    path.join(projectDir, 'tsconfig.node.json'),
-    getTSConfigNode(),
+    path.join(projectDir, "tsconfig.node.json"),
+    getTSConfigNode()
   );
 
   // 写入 .gitignore
-  await fs.writeFile(
-    path.join(projectDir, '.gitignore'),
-    getGitignore(),
-  );
+  await fs.writeFile(path.join(projectDir, ".gitignore"), getGitignore());
 
   // 写入 README.md
   await fs.writeFile(
-    path.join(projectDir, 'README.md'),
-    getReadme(preferences),
+    path.join(projectDir, "README.md"),
+    getReadme(preferences)
   );
 
   // 写入扩展代码
   await fs.writeFile(
-    path.join(projectDir, 'extension', 'index.ts'),
-    getExtensionIndex(preferences),
+    path.join(projectDir, "extension", "index.ts"),
+    getExtensionIndex(preferences)
   );
   await fs.writeFile(
-    path.join(projectDir, 'extension', 'views', 'panel.ts'),
-    getExtensionPanel(preferences),
+    path.join(projectDir, "extension", "views", "panel.ts"),
+    getExtensionPanel(preferences)
   );
   await fs.writeFile(
-    path.join(projectDir, 'extension', 'views', 'helper.ts'),
-    getExtensionHelper(preferences),
+    path.join(projectDir, "extension", "views", "helper.ts"),
+    getExtensionHelper(preferences)
   );
 
   // 写入 HTML
   await fs.writeFile(
-    path.join(projectDir, 'index.html'),
-    getIndexHtml(preferences),
+    path.join(projectDir, "index.html"),
+    getIndexHtml(preferences)
   );
 
   // 写入前端框架代码
-  if (preferences.framework === 'react') {
+  if (preferences.framework === "react") {
     await fs.writeFile(
-      path.join(projectDir, 'src', 'main.tsx'),
-      getReactMain(preferences),
+      path.join(projectDir, "src", "main.tsx"),
+      getReactMain(preferences)
     );
     await fs.writeFile(
-      path.join(projectDir, 'src', 'App.tsx'),
-      getReactApp(preferences),
+      path.join(projectDir, "src", "App.tsx"),
+      getReactApp(preferences)
     );
     await fs.writeFile(
-      path.join(projectDir, 'src', 'vite-env.d.ts'),
-      getViteEnvDts(),
+      path.join(projectDir, "src", "vite-env.d.ts"),
+      getViteEnvDts()
     );
     await fs.writeFile(
-      path.join(projectDir, 'src', 'utils', 'index.ts'),
-      getUtilsIndex(),
+      path.join(projectDir, "src", "utils", "index.ts"),
+      getUtilsIndex()
     );
     await fs.writeFile(
-      path.join(projectDir, 'src', 'utils', 'vscode.ts'),
-      getUtilsVscode(preferences),
+      path.join(projectDir, "src", "utils", "vscode.ts"),
+      getUtilsVscode(preferences)
+    );
+    await fs.writeFile(path.join(projectDir, "src", "App.css"), getAppCss());
+  } else if (preferences.framework === "vue") {
+    await fs.writeFile(
+      path.join(projectDir, "src", "main.ts"),
+      getVueMain(preferences)
     );
     await fs.writeFile(
-      path.join(projectDir, 'src', 'App.css'),
-      getAppCss(),
-    );
-  } else if (preferences.framework === 'vue') {
-    await fs.writeFile(
-      path.join(projectDir, 'src', 'main.ts'),
-      getVueMain(preferences),
+      path.join(projectDir, "src", "App.vue"),
+      getVueApp(preferences)
     );
     await fs.writeFile(
-      path.join(projectDir, 'src', 'App.vue'),
-      getVueApp(preferences),
+      path.join(projectDir, "src", "vite-env.d.ts"),
+      getViteEnvDts()
     );
     await fs.writeFile(
-      path.join(projectDir, 'src', 'vite-env.d.ts'),
-      getViteEnvDts(),
-    );
-    await fs.writeFile(
-      path.join(projectDir, 'src', 'shims-vue.d.ts'),
-      getVueShims(),
+      path.join(projectDir, "src", "shims-vue.d.ts"),
+      getVueShims()
     );
   }
 
   // 写入 Linter 配置
-  if (preferences.linter === 'ESLint') {
+  if (preferences.linter === "ESLint") {
     await fs.writeFile(
-      path.join(projectDir, 'eslint.config.mjs'),
-      getESLintConfig(),
+      path.join(projectDir, "eslint.config.mjs"),
+      getESLintConfig()
     );
-  } else if (preferences.linter === 'Biome') {
-    await fs.writeFile(
-      path.join(projectDir, 'biome.json'),
-      getBiomeConfig(),
-    );
+  } else if (preferences.linter === "Biome") {
+    await fs.writeFile(path.join(projectDir, "biome.json"), getBiomeConfig());
   }
 
   // 写入 VSCode 配置
   if (preferences.vscode) {
-    await fs.mkdir(path.join(projectDir, '.vscode'), { recursive: true });
+    await fs.mkdir(path.join(projectDir, ".vscode"), { recursive: true });
     await fs.writeFile(
-      path.join(projectDir, '.vscode', 'settings.json'),
-      getVSCodeSettings(preferences),
+      path.join(projectDir, ".vscode", "settings.json"),
+      getVSCodeSettings(preferences)
     );
     await fs.writeFile(
-      path.join(projectDir, '.vscode', 'extensions.json'),
-      getVSCodeExtensions(preferences),
+      path.join(projectDir, ".vscode", "extensions.json"),
+      getVSCodeExtensions(preferences)
     );
     await fs.writeFile(
-      path.join(projectDir, '.vscode', 'launch.json'),
-      getVSCodeLaunch(preferences),
+      path.join(projectDir, ".vscode", "launch.json"),
+      getVSCodeLaunch(preferences)
     );
     await fs.writeFile(
-      path.join(projectDir, '.vscode', 'tasks.json'),
-      getVSCodeTasks(preferences),
+      path.join(projectDir, ".vscode", "tasks.json"),
+      getVSCodeTasks(preferences)
     );
   }
 }
@@ -180,12 +179,14 @@ function getUtilsIndex() {
 }
 
 function getUtilsVscode(preferences: Preferences) {
-  const toolkitImport = preferences.framework === 'react'
-    ? `import { provideVsCodeDesignSystem, Button, TextField } from '@vscode/webview-ui-toolkit';`
-    : '';
-  const toolkitInit = preferences.framework === 'react'
-    ? `provideVsCodeDesignSystem().register(Button(), TextField());`
-    : '';
+  const toolkitImport =
+    preferences.framework === "react"
+      ? `import { provideVsCodeDesignSystem, Button, TextField } from '@vscode/webview-ui-toolkit';`
+      : "";
+  const toolkitInit =
+    preferences.framework === "react"
+      ? "provideVsCodeDesignSystem().register(Button(), TextField());"
+      : "";
 
   return `import { acquireVsCodeApi } from 'vscode-webview';
 ${toolkitImport}

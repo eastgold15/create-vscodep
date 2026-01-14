@@ -1,15 +1,13 @@
-import type { PromptOptions } from 'enquirer';
-import { randomBytes } from 'node:crypto';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import enquirer from 'enquirer';
-import dedent from 'ts-dedent';
+import { randomBytes } from "node:crypto";
+import fs from "node:fs/promises";
+import type { PromptOptions } from "enquirer";
+import enquirer from "enquirer";
 
-export type PackageManager = 'bun' | 'npm' | 'pnpm' | 'yarn';
+export type PackageManager = "bun" | "npm" | "pnpm" | "yarn";
 
-export type Framework = 'react' | 'vue';
+export type Framework = "react" | "vue";
 
-export type Linter = 'ESLint' | 'Biome' | 'None';
+export type Linter = "ESLint" | "Biome" | "None";
 
 export interface Preferences {
   projectName: string;
@@ -17,7 +15,7 @@ export interface Preferences {
   packageManager: PackageManager;
   framework: Framework;
   linter: Linter;
-  runtime: 'Bun' | 'Node.js';
+  runtime: "Bun" | "Node.js";
   git: boolean;
   vscode: boolean;
   noInstall: boolean;
@@ -28,12 +26,12 @@ export interface Preferences {
 }
 
 export class PreferencesClass {
-  projectName = '';
-  dir = '';
-  packageManager: PackageManager = 'bun';
-  framework: Framework = 'react';
-  linter: Linter = 'None';
-  runtime: 'Bun' | 'Node.js' = 'Bun';
+  projectName = "";
+  dir = "";
+  packageManager: PackageManager = "bun";
+  framework: Framework = "react";
+  linter: Linter = "None";
+  runtime: "Bun" | "Node.js" = "Bun";
   git = true;
   vscode = true;
   noInstall = false;
@@ -41,8 +39,8 @@ export class PreferencesClass {
     commandName: string;
     viewName: string;
   } = {
-    commandName: 'hello-world',
-    viewName: 'HelloWorld',
+    commandName: "hello-world",
+    viewName: "HelloWorld",
   };
 }
 
@@ -52,10 +50,10 @@ export async function createOrFindDir(dir: string) {
     const filesInTargetDirectory = await fs.readdir(dir);
     if (filesInTargetDirectory.length > 0) {
       const { overwrite } = await prompt({
-        type: 'confirm',
-        name: 'overwrite',
+        type: "confirm",
+        name: "overwrite",
         message:
-          'Target directory is not empty. Remove existing files and continue?',
+          "Target directory is not empty. Remove existing files and continue?",
         initial: false,
       });
       if (!overwrite) {
@@ -72,18 +70,18 @@ export async function createOrFindDir(dir: string) {
 export function detectPackageManager(): PackageManager {
   const userAgent = process.env.npm_config_user_agent;
   if (!userAgent) {
-    return 'bun';
+    return "bun";
   }
-  const pmSpec = userAgent.split(' ')[0];
-  const pm = pmSpec.split('/')[0] as PackageManager;
-  if (['bun', 'npm', 'pnpm', 'yarn'].includes(pm)) {
+  const pmSpec = userAgent.split(" ")[0];
+  const pm = pmSpec.split("/")[0] as PackageManager;
+  if (["bun", "npm", "pnpm", "yarn"].includes(pm)) {
     return pm;
   }
-  return 'bun';
+  return "bun";
 }
 
 export function generateRandomString(length: number): string {
-  return randomBytes(length).toString('hex');
+  return randomBytes(length).toString("hex");
 }
 
 export function getPrefixedName(name: string): string {
@@ -107,11 +105,11 @@ export function toLowerCase(name: string): string {
 }
 
 export function createPrompt(
-  questions: Array<PromptOptions | string>,
+  questions: Array<PromptOptions | string>
 ): Promise<any> {
   return enquirer.prompt(questions);
 }
 
 export function getExtensionId(name: string): string {
-  return `${name.replace(/[^a-z0-9-]/gi, '').toLowerCase()}`;
+  return `${name.replace(/[^a-z0-9-]/gi, "").toLowerCase()}`;
 }
