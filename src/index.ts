@@ -87,7 +87,7 @@ const main = defineCommand({
       dir: projectDir,
       packageManager,
       framework: "react",
-      linter: "None",
+      linter: "ultracite",
       runtime: packageManager === "bun" ? "Bun" : "Node.js",
       git: true,
       vscode: true,
