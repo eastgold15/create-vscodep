@@ -4,6 +4,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { defineCommand, runMain } from "citty";
+
+import { consola } from "consola";
 import { render } from "./templates";
 import type { PackageManager, Preferences } from "./utils";
 import { createPrompt, detectPackageManager } from "./utils";
@@ -191,6 +193,24 @@ const main = defineCommand({
         await execAsync(cmd, { cwd: projectDir });
       }
       console.log("✅ Dependencies installed!");
+
+      if (preferences.linter === "ultracite") {
+        // 新增：ultracite 专属提醒（醒目样式）
+        consola.warn(
+          "\n⚠️  Important: Ultracite needs manual initialization! " +
+            "Please run the following command in your project directory:\n" +
+            `  ${preferences.packageManager} x ultracite init` +
+            "\nThis will set up Ultracite configuration for your project."
+        );
+        // 可选：添加更醒目的分隔线 + 代码块
+        consola.fatal(
+          `\n📝 Manual command to run (copy & paste):
+          ${"```bash"}
+          cd ${preferences.projectName}
+          ${preferences.packageManager} x ultracite init
+          ${"```"}`
+        );
+      }
     }
 
     console.log(`\n✅ Project created at: ${projectDir}`);
@@ -216,7 +236,8 @@ function getInstallCommands(preferences: Preferences): string[] {
     commands.push(`${preferences.packageManager} exec biome init`);
   }
   if (preferences.linter === "ultracite") {
-    commands.push(`${preferences.packageManager} x ultracite init`);
+    // commands.push(`${preferences.packageManager} x ultracite init`);
+    return commands;
   }
 
   if (preferences.linter === "ESLint") {
