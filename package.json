@@ -1,6 +1,6 @@
 {
   "name": "create-vscodep",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "type": "module",
   "description": "Create VS Code extensions with modern tooling",
   "author": "boer",
@@ -13,8 +13,7 @@
   ],
   "scripts": {
     "dev": "pkgroll --watch",
-    "build": "pkgroll && npm link",
-    "prepare": "husky",
+    "build": "pkgroll ",
     "prepublishOnly": "bun run build ",
     "check": "tsc --noEmit",
     "lint": "ultracite check  .",
