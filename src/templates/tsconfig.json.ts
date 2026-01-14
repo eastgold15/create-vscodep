@@ -31,9 +31,12 @@ export function getTSConfigApp(preferences: Preferences) {
     {
       "extends": "${extendsPath}",
       "compilerOptions": {
-        "composite": true,
-        "lib": ["ES2020", "DOM", "DOM.Iterable"],
-        "jsx": "react-jsx"
+         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+          "paths": {
+            "@/*": ["./src/*"]
+          },
+          "types": ["vite/client"]
+        },
       },
       "include": [${includes}]
     }
@@ -42,12 +45,13 @@ export function getTSConfigApp(preferences: Preferences) {
 
 export function getTSConfigNode() {
   return dedent`
-    {
-      "extends": "@tomjs/tsconfig/node.json",
-      "compilerOptions": {
-        "composite": true
-      },
-      "include": ["extension", "*.config.ts"]
-    }
+  {
+  "extends": "@tomjs/tsconfig/node.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "types": ["@tomjs/vite-plugin-vscode/types"]
+  },
+  "include": ["extension", "*.config.ts"]
+  }
   `;
 }

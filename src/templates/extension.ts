@@ -5,18 +5,27 @@ export function getExtensionIndex(preferences: Preferences) {
   const { meta } = preferences;
 
   return dedent`
-    import type { ExtensionContext } from 'vscode';
-    import { commands } from 'vscode';
-    import { ${meta.viewName}Panel } from './views/panel';
+ import type { ExtensionContext } from 'vscode';
+import { i18n, initExtension } from '@tomjs/vscode';
+import { commands, window } from 'vscode';
+import { MainPanel } from './views/panel';
 
-    export function activate(context: ExtensionContext) {
-      context.subscriptions.push(
-        commands.registerCommand('${meta.commandName}.show${meta.viewName}', async () => {
-          await ${meta.viewName}Panel.render(context);
-        }),
-      );
-    }
+export function activate(context: ExtensionContext) {
+  initExtension(context);
 
-    export function deactivate() {}
+  context.subscriptions.push(
+    commands.registerCommand('tomjs.xxx.showHello', async () => {
+      window.showInformationMessage(i18n.t('tomjs.commands.hello'));
+    }),
+  );
+  context.subscriptions.push(
+    commands.registerCommand('tomjs.xxx.showPanel', async () => {
+      MainPanel.render(context);
+    }),
+  );
+}
+
+export function deactivate() {}
+
   `;
 }

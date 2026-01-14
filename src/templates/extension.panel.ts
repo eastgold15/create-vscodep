@@ -7,12 +7,12 @@ export function getExtensionPanel(preferences: Preferences) {
   const extension = framework === "react" ? ".tsx" : "";
 
   return dedent`
-   import type { Disposable, ExtensionContext, WebviewPanel } from 'vscode';
+  import type { Disposable, ExtensionContext, WebviewPanel } from 'vscode';
 import { ViewColumn, window } from 'vscode';
 import { WebviewHelper } from './helper';
 
-export class ${meta.viewName}Panel {
-  public static currentPanel: ${meta.viewName}Panel | undefined;
+export class MainPanel {
+  public static currentPanel: MainPanel | undefined;
   private readonly _panel: WebviewPanel;
   private _disposables: Disposable[] = [];
 
@@ -26,24 +26,23 @@ export class ${meta.viewName}Panel {
   }
 
   public static render(context: ExtensionContext) {
-    if ( ${meta.viewName}.currentPanel) {
-       ${meta.viewName}.currentPanel._panel.reveal(ViewColumn.One);
+    if (MainPanel.currentPanel) {
+      MainPanel.currentPanel._panel.reveal(ViewColumn.One);
     }
     else {
-      const panel = window.createWebviewPanel('${meta.viewName}', '${meta.viewName}', ViewColumn.One, {
+      const panel = window.createWebviewPanel('showHelloWorld', 'Hello World', ViewColumn.One, {
         enableScripts: true,
       });
 
-      ${meta.viewName}Panel.currentPanel = new ${meta.viewName}Panel(panel, context);
+      MainPanel.currentPanel = new MainPanel(panel, context);
     }
-    ${meta.viewName}Panel.currentPanel._panel.webview.postMessage({ type: 'hello', data: 'Hello World!' });
   }
 
   /**
    * Cleans up and disposes of webview resources when the webview panel is closed.
    */
   public dispose() {
-    ${meta.viewName}Panel.currentPanel = undefined;
+    MainPanel.currentPanel = undefined;
 
     // Dispose of the current webview panel
     this._panel.dispose();
@@ -52,10 +51,11 @@ export class ${meta.viewName}Panel {
     while (this._disposables.length) {
       const disposable = this._disposables.pop();
       if (disposable) {
-        disposable.dispose();   
+        disposable.dispose();
       }
     }
   }
 }
+
   `;
 }

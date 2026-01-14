@@ -19,21 +19,20 @@ export function getPackageJson(preferences: Preferences) {
     devDeps["@types/react-dom"] = devDependencies["@types/react-dom"];
   } else if (framework === "vue") {
     deps.vue = dependencies.vue;
-    devDeps["@vue/tsconfig"] = devDependencies["@vue/tsconfig"];
   }
 
   // 核心开发依赖
   devDeps["@tomjs/tsconfig"] = devDependencies["@tomjs/tsconfig"];
   devDeps["@tomjs/vite-plugin-vscode"] =
-    dependencies["@tomjs/vite-plugin-vscode"];
+    devDependencies["@tomjs/vite-plugin-vscode"];
   devDeps["@types/vscode"] = devDependencies["@types/vscode"];
   devDeps["@types/vscode-webview"] = devDependencies["@types/vscode-webview"];
-  devDeps.vite = dependencies.vite;
+  devDeps.vite = devDependencies.vite;
 
   if (framework === "react") {
-    devDeps["@vitejs/plugin-react"] = dependencies["@vitejs/plugin-react"];
+    devDeps["@vitejs/plugin-react"] = devDependencies["@vitejs/plugin-react"];
   } else if (framework === "vue") {
-    devDeps["@vitejs/plugin-vue"] = dependencies["@vitejs/plugin-vue"];
+    devDeps["@vitejs/plugin-vue"] = devDependencies["@vitejs/plugin-vue"];
   }
 
   // Linter

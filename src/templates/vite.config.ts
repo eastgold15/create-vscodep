@@ -18,17 +18,24 @@ export function getViteConfig(preferences: Preferences) {
   return dedent`
     import { defineConfig } from 'vite';
     import vscode from '@tomjs/vite-plugin-vscode';
+    import { fileURLToPath, URL } from 'node:url';
+    import react from '@vitejs/plugin-react-swc';
     ${pluginImport}
 
     export default defineConfig({
       plugins: [
         ${pluginConfig}
-        vscode({
-          extension: {
-            sourcemap: 'inline',
-          },
-        }),
+        vscode(),
       ],
+      resolve: {
+        alias: {
+          '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
+      },
+      build: {
+        chunkSizeWarningLimit: 102400,
+        reportCompressedSize: false,
+      },
     });
   `;
 }

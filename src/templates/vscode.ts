@@ -77,7 +77,7 @@ export function getVSCodeLaunch(preferences: Preferences) {
 
 export function getVSCodeTasks(preferences: Preferences) {
   return dedent`
-  // See https://go.microsoft.com/fwlink/?LinkId=733558
+// See https://go.microsoft.com/fwlink/?LinkId=733558
 // for the documentation about the tasks.json format
 {
   "version": "2.0.0",
@@ -99,7 +99,7 @@ export function getVSCodeTasks(preferences: Preferences) {
         "background": {
           "activeOnStart": true,
           "beginsPattern": "^.*extension build start*$",
-          "endsPattern": "^.*extension build success.*$"
+          "endsPattern": "^.*extension (build|rebuild) success.*$"
         }
       },
       "isBackground": true,

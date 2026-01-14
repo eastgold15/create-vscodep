@@ -2,7 +2,8 @@ import dedent from "ts-dedent";
 import type { Preferences } from "../utils";
 
 export function getExtensionHelper(preferences: Preferences) {
-  return dedent`import type { Disposable, ExtensionContext, Webview } from 'vscode';
+  return dedent`
+  import type { Disposable, ExtensionContext, Webview } from 'vscode';
 import { getWebviewHtml } from 'virtual:vscode';
 import { window } from 'vscode';
 
@@ -18,12 +19,12 @@ export class WebviewHelper {
   public static setupWebviewHooks(webview: Webview, disposables: Disposable[]) {
     webview.onDidReceiveMessage(
       (message: any) => {
-        const type = message.type;
-        const data = message.data;
-        console.log(\`type: \${type}\`);
-        switch (type) {
+        const command = message.command;
+        const text = message.text;
+        console.log(\`command: \${command} \`);
+        switch (command) {
           case 'hello':
-            window.showInformationMessage(data);
+            window.showInformationMessage(text);
         }
       },
       undefined,
@@ -31,5 +32,6 @@ export class WebviewHelper {
     );
   }
 }
+
   `;
 }
